@@ -20,17 +20,28 @@ const displayController = (function () {
     const gameContainer = document.querySelector('.game-container');
     const gameBoardGrid = document.createElement('div');
     
+    
     //Method to create new grid inside of the game container div
     function createNewGrid() {
+        //GameboardGrid style
         gameBoardGrid.style.display = 'grid';
-        gameBoardGrid.style.gridTemplateColumns = '1fr 1fr 1fr';
-        gameBoardGrid.style.gridTemplateRows = '1fr 1fr 1fr';
+        gameBoardGrid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+        gameBoardGrid.style.gridTemplateRows = 'repeat(3, 1fr)';
+        gameBoardGrid.style.outline = '1px solid black';
         gameBoardGrid.style.height = 'max(29vw,49vh)';
         gameBoardGrid.style.width ='max(29vw,49vh)';
+        gameBoardGrid.style.gap = '1px';
+
+        
 
         gameContainer.appendChild(gameBoardGrid);
     }
     function init() {
+        for(let i =0; i<9; i++){
+            const divs = document.createElement('div');
+            divs.classList.add('game-divs');
+            gameBoardGrid.appendChild(divs);
+        }
         createNewGrid();
     }
     init(); 
