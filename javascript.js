@@ -9,10 +9,31 @@ const player = (playerNum, marker) => {
 //Module to store array
 const gameBoard = (function () {
     gameBoardArray = ['x','o','x','x','x','o','x','o','x'];
+    return {
+        gameBoardArray
+    }
 })();
 
 //Module to display gameboard
 const displayController = (function () {
+    //cacheDom
+    const gameContainer = document.querySelector('.game-container');
+    const gameBoardGrid = document.createElement('div');
     
+    //Method to create new grid inside of the game container div
+    function createNewGrid() {
+        gameBoardGrid.style.display = 'grid';
+        gameBoardGrid.style.gridTemplateColumns = '1fr 1fr 1fr';
+        gameBoardGrid.style.gridTemplateRows = '1fr 1fr 1fr';
+        gameBoardGrid.style.height = 'max(29vw,49vh)';
+        gameBoardGrid.style.width ='max(29vw,49vh)';
+
+        gameContainer.appendChild(gameBoardGrid);
+    }
+    function init() {
+        createNewGrid();
+    }
+    init(); 
+
 })();
 //
