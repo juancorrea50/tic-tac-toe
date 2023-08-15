@@ -67,7 +67,7 @@ dialog[open]{
     align-items: center;
     font-size: 20px;
     gap: 20px;
-    padding: 5px;
+    padding: 10px;
     height: max(10vw,20vh);
     width: max(10vw,30vh);
 }
