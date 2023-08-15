@@ -19,6 +19,7 @@ const displayController = (function () {
     //cacheDom
     const gameContainer = document.querySelector('.game-container');
     const gameBoardGrid = document.createElement('div');
+    gameBoardGrid.classList.add('game-board-grid');
     
     
     //Method to create new grid inside of the game container div
@@ -32,19 +33,33 @@ const displayController = (function () {
         gameBoardGrid.style.width ='max(29vw,49vh)';
         gameBoardGrid.style.gap = '1px';
 
-        
-
         gameContainer.appendChild(gameBoardGrid);
     }
-    function init() {
-        for(let i =0; i<9; i++){
-            const divs = document.createElement('div');
-            divs.classList.add('game-divs');
-            gameBoardGrid.appendChild(divs);
-        }
-        createNewGrid();
-    }
-    init(); 
 
+    function fillGame(){
+            //temporarily fills the div with the player answer
+            //will activate an onclick listener function that fills with the player marker
+            
+            //Carry gameboard object here to access array.        
+            const gameboardCall = gameBoard;
+            //Fills gameboard container with divs
+            for(let i =0; i<9; i++){
+                //create gameboard divs that will be referenced on click for player interaction
+                const divs = document.createElement('div');
+                divs.classList.add(`item-${i}`);
+                divs.innerText = gameBoardArray[i];
+                gameBoardGrid.appendChild(divs);
+            }
+            console.log(gameboardCall)
+
+    }
+
+    function init() {
+        //Initialize full grid based on array
+            createNewGrid();
+            fillGame();
+    }
+    
+    init(); 
 })();
 //
