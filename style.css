@@ -24,8 +24,8 @@ h1 {
     justify-content: center;
     border: 1px solid black;
     background-color: black;
-    height: max(30vw, 70vh);
-    width: max(30vw, 70vh);
+    height: max(30vw, 69vh);
+    width: max(30vw, 71vh);
 }
 .game-container > * {
     display: grid;
