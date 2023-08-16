@@ -2,11 +2,11 @@
 
 
 //Factory function to create player objects
-const player = (playerNum, marker) => {
+const player = (marker) => {
     this.marker = marker;
-    this.playerNum = playerNum;
-    return { marker, playerNum };
+    return { marker };
 };
+//Factory function to create player profile from modal submission
 const createPlayer = () =>{
     //Dom cache for function 
     const dialogWindow = document.getElementById('marker-dialog');
@@ -17,6 +17,8 @@ const createPlayer = () =>{
     dialogWindow.showModal();
     //Confirm button disabled by default
     confrmChce.disabled=true;
+    //Variable to return for player identity marker
+    let playerOne = '';
     //Function for choice change
     function cacheAnswer(){
         confrmChce.value = selectEl.value;
@@ -37,15 +39,16 @@ const createPlayer = () =>{
         event.preventDefault();
         console.log('default prevented')
         dialogWindow.close(selectEl.value);
+        playerOne = player(selectEl.value);
+        console.log('Player One Marker Chosen: ' + playerOne.marker);
     }
 
 
     selectEl.addEventListener('change', cacheAnswer);
     dialogWindow.addEventListener('close', valueCheck);
     confrmChce.addEventListener('click', submitCheck);
-
     
-    //Create Player One
+    return { playerOne };
 }
 
 
