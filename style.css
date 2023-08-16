@@ -71,3 +71,6 @@ dialog[open]{
     height: max(10vw,20vh);
     width: max(10vw,30vh);
 }
+.player-info{
+    margin-bottom: 30px;
+}

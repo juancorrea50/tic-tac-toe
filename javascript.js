@@ -8,8 +8,43 @@ const player = (playerNum, marker) => {
     return { marker, playerNum };
 };
 const createPlayer = () =>{
-    const dialogWindow = document.getElementById('marker-dialog')
+    //Dom cache for function 
+    const dialogWindow = document.getElementById('marker-dialog');
+    const confrmChce = document.getElementById('confirm-choice');
+    const selectEl = document.getElementById('marker');
+    const playerInfo = document.querySelector('.player-info')
+    //Show modal opens modal and dims background (Cannot center for some reason)
     dialogWindow.showModal();
+    //Confirm button disabled by default
+    confrmChce.disabled=true;
+    //Function for choice change
+    function cacheAnswer(){
+        confrmChce.value = selectEl.value;
+        console.log(confrmChce.value);
+        if(confrmChce.value == 'default'){
+            confrmChce.disabled=true;
+        } else {
+            confrmChce.disabled=false;
+        }
+    }
+    //Function 
+    function valueCheck(){
+        dialogWindow.returnValue == 'default' ?
+        console.log('marker not chosen') :
+        playerInfo.innerText += ` ${dialogWindow.returnValue.toUpperCase()}`;
+    }
+    function submitCheck(event){
+        event.preventDefault();
+        console.log('default prevented')
+        dialogWindow.close(selectEl.value);
+    }
+
+
+    selectEl.addEventListener('change', cacheAnswer);
+    dialogWindow.addEventListener('close', valueCheck);
+    confrmChce.addEventListener('click', submitCheck);
+
+    
     //Create Player One
 }
 
