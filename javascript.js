@@ -65,7 +65,7 @@ const createPlayerInfo = () => {
 
 
 
-//Module to display gameboard
+//Module for gameboard display
 const displayController = (function () {
     //cacheDom(creates variables for queryselector DOM elements)
     const _gameContainer = document.querySelector('.game-container');
