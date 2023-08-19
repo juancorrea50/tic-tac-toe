@@ -18,7 +18,7 @@ const gameBoard = (function () {
 })();
 
 //Factory function to create player profile from modal submission
-const createPlayerInfo = () => {
+const createPlayerInfo =(function () {
     //Dom cache for function 
     const _dialogWindow = document.getElementById('marker-dialog');
     const _confrmChce = document.getElementById('confirm-choice');
@@ -31,7 +31,8 @@ const createPlayerInfo = () => {
     //Confirm button disabled by default
     _confrmChce.disabled=true;
     //variable to store player object
-
+    let playerOne = player('');
+    console.log(playerOne)
 
     //Function for choice change
     function cacheAnswer(){
@@ -49,17 +50,30 @@ const createPlayerInfo = () => {
     }
     function submitCheck(event){
         event.preventDefault();
-        console.log('default prevented')
         _dialogWindow.close(_selectEl.value);
         console.log('Player One Marker Chosen: ' + _confrmChce.value);
+        _setPlayerMarker(_selectEl.value);
+        console.log('submit commenced');
+    }
+    function _setPlayerMarker(mrkr){
+        playerOne.marker = mrkr;
+        console.log(playerOne);
+    }
+    function getPlayerMarker() {
+        return playerOne.marker;
     }
     
     _selectEl.addEventListener('change', cacheAnswer);
     _dialogWindow.addEventListener('close', valueCheck);
-    _confrmChce.addEventListener('click', submitCheck);
+    _confrmChce.addEventListener('click', (e) =>{
+        submitCheck(e);
+        displayController.createNewGrid();
+        displayController.fillGame();
+    });
+
     //Return values when called
-    return {cacheAnswer, valueCheck, submitCheck};
-}
+    return {cacheAnswer, valueCheck, submitCheck, getPlayerMarker};
+})();
  
 
 
@@ -79,6 +93,8 @@ const displayController = (function () {
     }
     //Fills the game with future interactive divs to fill them with the player marker
     function fillGame(){
+            const player = createPlayerInfo.getPlayerMarker();
+            console.log(player);
             //Activate an onclick listener function that fills divs with the player marker
             /*function answerClick(){
                 divs.innerText = player;
@@ -106,10 +122,9 @@ const displayController = (function () {
 //Initialization of game
 const createGame =(function () {
        function init() {
-        createPlayerInfo();
-        displayController.createNewGrid();
-        displayController.fillGame();
+        createPlayerInfo;
+        console.log(createPlayerInfo.getPlayerMarker());
     }
     init();
-});
-createGame();
+
+})();
