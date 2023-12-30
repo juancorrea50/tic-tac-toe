@@ -1,130 +1,241 @@
-//Keep styling in CSS and keep functions and variables inside of objects and modules
-//REMEMBER THAT MODULES AND FACTORY FUNCTIONS ARE FOR CREATING PRIVATE VARIABLES AND FUNCTIONS*******
-//TREAT MODULES LIKE CLASSES AND THE INIT MODULE LIKE A DRIVER CLASS
-//'_' before the variable name means private/ not returned
+//Create a tic tac toe game using arrays to use later in the DOM
+    //Create 2D array and variables
+    //Create function to choose a place in the array
+    //Create an AI that randomly places the opposite marker
+    //function that checks for a winner after all slots are filled
+//Use modular js and objects for all variables and functions
 
-//Factory function to create player objects
-const player = (marker) => {
+const player = function (marker) {
     this.marker = marker;
-    return { marker };
-};
-//Module to store array
-const gameBoard = (function () {
-    //gameBoardArray = ['x','o','x','x','x','o','x','o','x'];
-    gameBoardArray = [];
-    return {
-        gameBoardArray
+    function getMarker() {
+        return marker;
     }
+    return {getMarker};
+}
+const domVariables = (function () {
+    //DOM Cache
+    const xBtn = document.querySelector(".x");
+    const oBtn = document.querySelector(".o");
+    const p1Marker = document.querySelector(".p1-marker");
+    const p2Marker = document.querySelector(".p2-marker");
+    const resetBtn = document.querySelector(".reset");
+
+    let playerChoice;
+    let gameBoardArray = [];
+
+    //Select X or O
+    function selX() {
+        console.log("X is selected");
+        setMarker('X');
+        oBtn.disabled = true;
+        xBtn.disabled = true;
+        p1Marker.innerText += " " + playerChoice.getMarker();
+        p2Marker.innerText += " O"
+        createGameBtns.createGrid();
+        return playerChoice.getMarker();
+    }
+    function selO() {
+        console.log("O is selected");
+        setMarker('O');
+        xBtn.disabled = true;
+        oBtn.disabled = true;
+        p1Marker.innerText += " " + playerChoice.getMarker();
+        p2Marker.innerText += " X";
+        createGameBtns.createGrid();
+        return playerChoice.getMarker();
+    }
+    //Setters and Getters for variables
+
+    //Save selection from button functions
+    function setMarker(mrkr){
+        playerChoice = player(mrkr);
+    }
+    //Print selection from button functions
+    function getMarker(){
+        return playerChoice.getMarker();
+    }
+    //Array functionality outside of enclosure
+    function pushGBA(id){
+        gameBoardArray.push(id);
+    }
+    function getArray(){
+        return gameBoardArray;
+    }
+    function resetArray(){
+        gameBoardArray.fill('');
+    }
+
+    //Marker selection from the DOM
+    console.log("Select marker from buttons on the DOM");
+    xBtn.addEventListener('click', selX);
+    oBtn.addEventListener('click', selO);
+
+    return {getMarker, resetBtn, getArray, pushGBA, resetArray, setMarker, p1Marker, p2Marker, oBtn, xBtn};
 })();
 
-//Factory function to create player profile from modal submission
-const createPlayerInfo =(function () {
-    //Dom cache for function 
-    const _dialogWindow = document.getElementById('marker-dialog');
-    const _confrmChce = document.getElementById('confirm-choice');
-    const _selectEl = document.getElementById('marker');
-    const _playerInfo = document.querySelector('.player-info');
+//End of global scope
 
-    //Show modal opens modal and dims background (Cannot center for some reason)
-    _dialogWindow.showModal();
+//Object to create a gameboard once the marker is selected
+const createGameBtns = (function () {
+    const container = document.querySelector('.btn-container');
+    const gba = domVariables.getArray();
+    //Main function to create the grid
+    function createGrid(){
+        //For loop to create the DOM elements and append them to the premade container
+        //If the container doesn't already have 9 elements append new children
+        if(container.children.length != 9){
+            for(let i=0;i<9;i++){
+                const btn = document.createElement('button');
+                btn.classList.add("item");
+                btn.setAttribute("id", i);
+                gba[i] = '';
+                container.appendChild(btn);
+            }
+            const gridbtns = document.querySelectorAll('.item');
+            gridbtns.forEach(gridbtns=>gridbtns.addEventListener('click',clickAction));
+        }
+        for(const child of createGameBtns.container.children){
+            child.disabled = false;
+        }
 
-    //Confirm button disabled by default
-    _confrmChce.disabled=true;
-    //variable to store player object
-    let playerOne = player('');
-    console.log(playerOne)
+    }
+    //Function for buttons functionality
+    function clickAction(e){
+        const playerChoice = domVariables.getMarker();
+        let gba = domVariables.getArray();
+        if(e.target.innerText == ''){
+            e.target.innerText = playerChoice;
+            
+            gba[e.target.getAttribute("id")] = playerChoice;
+        }
 
-    //Function for choice change
-    function cacheAnswer(){
-        _confrmChce.value = _selectEl.value;
-        console.log(_confrmChce.value);
-        if(_confrmChce.value == 'default'){
-            _confrmChce.disabled=true;
+        console.log(domVariables.getArray());
+        //Alternate the playerChoices
+        if(playerChoice == "X"){
+            domVariables.setMarker('O');
         } else {
-            _confrmChce.disabled=false;
+            domVariables.setMarker('X');
+        }
+        //Use function from Controller module to search for a winner
+        boardController.determineWinner();
+    }
+    return {createGrid, container};
+})();
+
+const boardController = (function () {
+    //DOM transfer
+    const p1M = domVariables.p1Marker;
+    const p2M = domVariables.p2Marker;
+    const xb = domVariables.xBtn;
+    const ob = domVariables.oBtn;
+    const rstBtn = domVariables.resetBtn;
+    const p1ChngNm = document.querySelector(".change-p1");
+    const p2ChngNm = document.querySelector(".change-p2");
+    
+    //Clear board and disable DOM buttons other than X and O
+    function clearBoard(){
+        console.log("Clear Board");
+        playerChoice = '';
+        p1M.innerText = "Player 1 Marker: ";
+        p2M.innerText = "Player 2 Marker: ";
+        ob.disabled = false;
+        xb.disabled = false;
+        //Reset array
+        domVariables.resetArray();
+        //Reset DOM contents
+        for(const child of createGameBtns.container.children){
+            child.innerText = '';
+            child.disabled = true;
         }
     }
-//Checks for value inside of the dialog and modal
-    function valueCheck(){
-        _playerInfo.innerText += ` ${_dialogWindow.returnValue.toUpperCase()}`;
-    }
-    function submitCheck(event){
-        event.preventDefault();
-        _dialogWindow.close(_selectEl.value);
-        console.log('Player One Marker Chosen: ' + _confrmChce.value);
-        _setPlayerMarker(_selectEl.value);
-        console.log('submit commenced');
-    }
-    function _setPlayerMarker(mrkr){
-        playerOne.marker = mrkr;
-        console.log(playerOne);
-    }
-    function getPlayerMarker() {
-        return playerOne.marker;
-    }
     
-    _selectEl.addEventListener('change', cacheAnswer);
-    _dialogWindow.addEventListener('close', valueCheck);
-    _confrmChce.addEventListener('click', (e) =>{
-        submitCheck(e);
-        displayController.createNewGrid();
-        displayController.fillGame();
-    });
+    function determineWinner(){
+        let gba = domVariables.getArray();
+        console.log('Checked for winner using array: ' + gba);
 
-    //Return values when called
-    return {cacheAnswer, valueCheck, submitCheck, getPlayerMarker};
-})();
- 
+        //X Win Conditions
+        if(
+            //Diagonal conditions
+            gba[0] == 'X' && gba[4] == 'X' && gba[8] == 'X' || gba[2] == 'X' && gba[4] == 'X' && gba[6] == 'X' 
+            //Horizontal conditions
+            || gba[0] == 'X' && gba[1] == 'X' && gba[2] == 'X' || gba[3] == 'X' && gba[4] == 'X' && gba[5] == 'X' || gba[6] == 'X' && gba[7] == 'X' && gba[8] == 'X'
+            //Vertical Conditions
+            || gba[0] == 'X' && gba[3] == 'X' && gba[6] == 'X' || gba[1] == 'X' && gba[4] == 'X' && gba[7] == 'X' || gba[2] == 'X' && gba[5] == 'X' && gba[8] == 'X'){
 
+                console.log("X wins");
+                _disableBtn();
 
+        }
+        //O Win Conditions
+        else if(
+            //Diagonal conditions
+            gba[0] == 'O' && gba[4] == 'O' && gba[8] == 'O' || gba[2] == 'O' && gba[4] == 'O' && gba[6] == 'O' 
+            //Horizontal conditions
+            || gba[0] == 'O' && gba[1] == 'O' && gba[2] == 'O' || gba[3] == 'O' && gba[4] == 'O' && gba[5] == 'O' || gba[6] == 'O' && gba[7] == 'O' && gba[8] == 'O'
+            //Vertical Conditions
+            || gba[0] == 'O' && gba[3] == 'O' && gba[6] == 'O' || gba[1] == 'O' && gba[4] == 'O' && gba[7] == 'O' || gba[2] == 'O' && gba[5] == 'O' && gba[8] == 'O'){
 
+                console.log("O wins");
+                _disableBtn();
 
-//Module for gameboard display
-const displayController = (function () {
-    //cacheDom(creates variables for queryselector DOM elements)
-    const _gameContainer = document.querySelector('.game-container');
-    const _gameBoardGrid = document.createElement('div');
-    _gameBoardGrid.classList.add('game-board-grid');
-    
-    
-    //Method to create new grid inside of the game container div
-    function createNewGrid() {
-        _gameContainer.appendChild(_gameBoardGrid);
-    }
-    //Fills the game with future interactive divs to fill them with the player marker
-    function fillGame(){
-            const player = createPlayerInfo.getPlayerMarker();
-            console.log(player);
-            //Activate an onclick listener function that fills divs with the player marker
-            /*function answerClick(){
-                divs.innerText = player;
-            }*/
-            //Carry gameboard object here to access array.        
-            const _gameboardCall = gameBoard;
-            //Fills gameboard container with divs
-            for(let i =0; i<9; i++){
-                //create gameboard divs that will be referenced on click for player interaction
-                const divs = document.createElement('div');
-                divs.classList.add(`item-${i}`);
-                //Fills array with blank space for testing
-                gameBoardArray[i] = '';
-                divs.innerText = gameBoardArray[i];
-                _gameBoardGrid.appendChild(divs);
-                //Potentially fill this with the event listener 
+            } else {
+                //Tie Condition 
+                _tieCondition();
             }
-            console.log(_gameboardCall)
+
+    }
+    //Change names of both players
+    function changeName(e){
+        let name = prompt("Please enter a name to change player to", "John");
+        if(e.target.getAttribute("class") == "change-p1"){
+            p1M.innerText = name + "'s Marker: ";
+        } else if(e.target.getAttribute("class") == "change-p2"){
+            p2M.innerText = name + "'s Marker: ";
+        }
+
+    }
+    //Helper functions
+    function _disableBtn(){
+        for(const child of createGameBtns.container.children){
+            child.disabled = true;
+        }
     }
     
-    return {createNewGrid, fillGame};
- 
-})();
-
-//Initialization of game
-const createGame =(function () {
-       function init() {
-        createPlayerInfo;
-        console.log(createPlayerInfo.getPlayerMarker());
+    function _tieCondition(){
+        const gba = domVariables.getArray();
+        if(gba.includes('') == false){
+            _disableBtn();
+            console.log("Tie")
+        }
     }
-    init();
-
+    
+    rstBtn.addEventListener("click", clearBoard);
+    //Change name button functionality
+    p1ChngNm.addEventListener("click", changeName);
+    p2ChngNm.addEventListener("click", changeName);
+    return {clearBoard, determineWinner};
 })();
+
+
+/*
+Module = a constant variable that is assigned an IIFE(Immediately Invoked Function) that returns any value and can be used to store variables and functions
+
+Constructor = a constant variable that is assigned a function with a parameter and assigns values based on the parameter entered to create an object
+but does not return a value as all values can be accessed.
+
+Factory Function = a function that takes in a parameter, does things with it, and returns values based on it's purpose.
+
+Ex.
+Module:
+    const exModule = (function () {})();
+Constructor:
+    const exConstr = function (param) {
+        this.param = param;
+        this.changeParam = param + "A";
+    }
+Factory Function:
+    function factFunc (param) {
+        const changeParam = param + "A";
+        return {changeParam, param};
+    }
+*/

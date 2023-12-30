@@ -3,39 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
     <script src="javascript.js" defer></script>
-    <title>Tic-Tac-Toe</title>
+    <title>tic-tac-toe js game</title>
 </head>
 <body>
-    <dialog id="marker-dialog">
-        <h2>Greetings</h2>
-        <p>Please choose a marker to play as!
-            <form id="marker-select" method="dialog">
-                <label for="marker">
-                    <select name="marker-selector" id="marker">
-                        <option value="default">Please select a marker: </option>
-                        <option value="x">X</option>
-                        <option value="o">O</option>
-                    </select>
-                </label>
-        </p>
-        </form>
-        <button value="default" form="marker-select" id="confirm-choice">OK</button>
-    </dialog>
-    <h1 class="title">Tic Tac Toe</h1>
     <div>
-        <!--Display Player Choice-->
-        <h3 class="player-info">Player Marker:</h3>
+        <h1>Tic-Tac-Toe</h1>
+        <p>Player 1: Choose X or O</p>
     </div>
-    <div class="game-container">
-        <!--Injected js goes here-->
+    <div class="marker-buttons">
+        <button class="x">X</button>
+        <button class="o">O</button>
     </div>
-    <div class="score">
-        <!--Stores score here-->
-        <div class="player-one">Player 1: </div>
-        <div class="player-two">Player 2: </div>
+    <div class="marker-display">
+        <div class="p1-marker">Player 1 Marker:</div>
+        <div class="p2-marker">Player 2 Marker:</div>
     </div>
 
+    <div class="btn-container">
+
+    </div>
+
+    <div class="bottom-container">
+        <button class="reset">Reset Game</button>
+        <button class="change-p1">Press to change P1 Name</button>
+        <button class="change-p2">Press to change P2 Name</button>
+    </div>
+
+    
 </body>
 </html>

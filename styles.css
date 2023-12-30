@@ -1,0 +1,40 @@
+body{
+    display: flex;    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.marker-display{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    gap: 3em;
+}
+.marker-buttons{
+    display: flex;
+    gap: 1em;
+}
+.marker-buttons > button{
+    height: 25px;
+    width: 100px;
+}
+.btn-container{
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid black;
+    height: 500px;
+    width: 500px;
+    align-items: center;
+    justify-content: space-around;
+    align-content: space-around;
+}
+.btn-container > button {
+    height: 150px;
+    width: 150px;
+    font-size: 150px;
+}
+.bottom-container{
+    display: flex;
+    gap: 2em;
+    padding: 20px;
+}
