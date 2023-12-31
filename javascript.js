@@ -19,6 +19,7 @@ const domVariables = (function () {
     const p1Marker = document.querySelector(".p1-marker");
     const p2Marker = document.querySelector(".p2-marker");
     const resetBtn = document.querySelector(".reset");
+    const winnerDiv = document.querySelector(".winner-div");
 
     let playerChoice;
     let gameBoardArray = [];
@@ -70,7 +71,7 @@ const domVariables = (function () {
     xBtn.addEventListener('click', selX);
     oBtn.addEventListener('click', selO);
 
-    return {getMarker, resetBtn, getArray, pushGBA, resetArray, setMarker, p1Marker, p2Marker, oBtn, xBtn};
+    return {getMarker, resetBtn, getArray, pushGBA, resetArray, setMarker, p1Marker, p2Marker, oBtn, xBtn, winnerDiv};
 })();
 
 //End of global scope
@@ -131,6 +132,7 @@ const boardController = (function () {
     const rstBtn = domVariables.resetBtn;
     const p1ChngNm = document.querySelector(".change-p1");
     const p2ChngNm = document.querySelector(".change-p2");
+    const wDiv = domVariables.winnerDiv;
     
     //Clear board and disable DOM buttons other than X and O
     function clearBoard(){
@@ -147,6 +149,8 @@ const boardController = (function () {
             child.innerText = '';
             child.disabled = true;
         }
+        //Clear result div
+        wDiv.innerText = '';
     }
     
     function determineWinner(){
@@ -164,6 +168,7 @@ const boardController = (function () {
 
                 console.log("X wins");
                 _disableBtn();
+                wDiv.innerText = "X wins";
 
         }
         //O Win Conditions
@@ -177,6 +182,7 @@ const boardController = (function () {
 
                 console.log("O wins");
                 _disableBtn();
+                wDiv.innerText = "X wins";
 
             } else {
                 //Tie Condition 
@@ -205,7 +211,8 @@ const boardController = (function () {
         const gba = domVariables.getArray();
         if(gba.includes('') == false){
             _disableBtn();
-            console.log("Tie")
+            console.log("Tie");
+            wDiv.innerText = "Tie";
         }
     }
     

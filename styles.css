@@ -2,6 +2,8 @@ body{
     display: flex;    flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: 100vh;
+    margin: 0px;
 }
 .marker-display{
     display: flex;
@@ -37,4 +39,12 @@ body{
     display: flex;
     gap: 2em;
     padding: 20px;
+}
+.winner-div{
+    font-size: 150px;
+    align-items: center;
+    justify-content: center;
+}
+footer{
+    padding-top: 180px;
 }
